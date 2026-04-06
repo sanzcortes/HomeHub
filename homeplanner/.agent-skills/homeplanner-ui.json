@@ -1,0 +1,235 @@
+{
+  "name": "HomePlanner UI",
+  "description": "Design system and UI patterns for HomePlanner application following W3C and ARIA best practices",
+  "instructions": {
+    "designPrinciples": {
+      "philosophy": "Minimalist, clean, and intuitive interfaces that prioritize usability and accessibility",
+      "approach": "Mobile-first, responsive design with a focus on clarity and simplicity"
+    },
+    "visualDesign": {
+      "colorPalette": {
+        "primary": "#3B82F6",
+        "primaryHover": "#2563EB",
+        "secondary": "#64748B",
+        "accent": "#10B981",
+        "danger": "#EF4444",
+        "background": "#F8FAFC",
+        "surface": "#FFFFFF",
+        "textPrimary": "#1E293B",
+        "textSecondary": "#64748B",
+        "border": "#E2E8F0"
+      },
+      "typography": {
+        "fontFamily": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        "headings": {
+          "h1": "text-2xl font-semibold leading-tight",
+          "h2": "text-lg font-medium leading-snug",
+          "h3": "text-base font-medium leading-normal"
+        },
+        "body": "text-base text-text-primary",
+        "small": "text-sm text-text-secondary"
+      },
+      "borderRadius": {
+        "small": "6px",
+        "medium": "8px",
+        "large": "12px",
+        "full": "9999px"
+      },
+      "shadows": {
+        "sm": "0 1px 2px rgba(0,0,0,0.05)",
+        "md": "0 4px 6px -1px rgba(0,0,0,0.1)",
+        "lg": "0 10px 15px -3px rgba(0,0,0,0.1)"
+      },
+      "minimumPadding": "0.5rem (8px)"
+    },
+    "spacing": {
+      "vertical": {
+        "scale": {
+          "xs": "gap-1 (4px)",
+          "sm": "gap-2 (8px)",
+          "md": "gap-4 (16px)",
+          "lg": "gap-6 (24px)",
+          "xl": "gap-8 (32px)"
+        }
+      },
+      "horizontal": {
+        "page": {
+          "mobile": "px-5 (20px)",
+          "tablet": "sm:px-6 (24px)",
+          "desktop": "md:px-8 (32px)"
+        },
+        "sidebar": {
+          "width": "w-64 (256px)",
+          "padding": "px-6 py-5 (header), px-3 py-4 (nav)"
+        },
+        "mainContent": {
+          "mobile": "px-4 py-6 (16px/24px)",
+          "desktop": "md:px-8 md:py-8 (32px/32px)"
+        },
+        "modal": {
+          "header": "px-6 py-4",
+          "content": "px-6 py-4",
+          "footer": "px-6 py-4"
+        },
+        "card": {
+          "sm": "p-3 (12px)",
+          "md": "p-4 (16px)",
+          "lg": "p-6 (24px)"
+        },
+        "navItems": {
+          "sidebar": "px-4 py-3",
+          "mobile": "px-4 py-3"
+        }
+      },
+      "principles": [
+        "Always wrap page content in Container component",
+        "Use Container size='lg' for most pages",
+        "Sidebar uses generous padding for comfortable touch targets",
+        "Navigation items have minimum 44px touch target",
+        "Buttons have minimum px-4 horizontal padding"
+      ]
+    },
+    "accessibility": {
+      "general": {
+        "contrast": "Minimum 4.5:1 contrast ratio for normal text, 3:1 for large text",
+        "focus": "Visible focus indicator on all interactive elements using :focus-visible",
+        "typography": "Use relative units (rem) for scalable text"
+      },
+      "landmarks": {
+        "description": "Use semantic HTML5 elements as landmarks",
+        "main": "<main> with id='main-content' and tabIndex={-1} for skip links",
+        "navigation": "<nav> with aria-label describing purpose",
+        "complementary": "<aside> for sidebar with aria-label",
+        "banner": "<header> for page headers"
+      },
+      "skipLinks": {
+        "description": "Provide skip navigation link for keyboard users",
+        "implementation": "<a href='#main-content' className='skip-link'>Saltar al contenido principal</a>"
+      },
+      "navigation": {
+        "nav": "Each <nav> must have unique aria-label",
+        "lists": "Use <ul role='list'> for navigation menus",
+        "current": "Use aria-current='page' for current page link"
+      },
+      "interactive": {
+        "buttons": {
+          "iconOnly": "Always provide aria-label when button contains only icon",
+          "disabled": "Use aria-disabled instead of disabled for better screen reader support",
+          "touchTarget": "Minimum 44px touch target"
+        },
+        "forms": {
+          "labels": "All inputs must have associated <label> elements",
+          "instructions": "Use aria-describedby for help text and error messages",
+          "required": "Use aria-required='true' for required fields",
+          "errors": "Use aria-invalid='true' and aria-errormessage for validation errors"
+        },
+        "modals": {
+          "role": "role='dialog'",
+          "modal": "aria-modal='true'",
+          "labelledby": "aria-labelledby pointing to modal title",
+          "focus": "Focus must be trapped within modal when open",
+          "escape": "Escape key must close modal",
+          "returnFocus": "Return focus to trigger element on close"
+        }
+      },
+      "content": {
+        "images": "Use aria-hidden='true' on decorative icons",
+        "dynamic": {
+          "loading": "Use aria-live='polite' for loading states",
+          "errors": "Use aria-live='assertive' for critical errors"
+        }
+      },
+      "focusManagement": {
+        "modals": "Trap focus within modal boundaries",
+        "return": "Always return focus to previous location after modal/overlay closes"
+      },
+      "keyboard": {
+        "tabOrder": "Logical tab order following visual layout",
+        "indicators": "Clear visual indication of focus state"
+      }
+    },
+    "components": {
+      "layout": {
+        "Container": {
+          "description": "Horizontal padding wrapper for page content",
+          "props": "size: 'sm' | 'md' | 'lg' | 'full'",
+          "sizes": {
+            "sm": "max-w-3xl",
+            "md": "max-w-5xl",
+            "lg": "max-w-7xl (default)",
+            "full": "max-w-full"
+          },
+          "padding": "px-5 sm:px-6 md:px-8"
+        },
+        "Stack": {
+          "description": "Vertical stack with configurable gap",
+          "props": "gap: 'xs' | 'sm' | 'md' | 'lg' | 'xl', align, justify, className"
+        },
+        "Row": {
+          "description": "Horizontal flex container with configurable gap",
+          "props": "gap: 'xs' | 'sm' | 'md' | 'lg', align, justify"
+        }
+      },
+      "content": {
+        "Card": {
+          "description": "Container component with background and border",
+          "props": "padding: 'none' | 'sm' | 'md' | 'lg', hoverable, className",
+          "defaultPadding": "md (16px)"
+        },
+        "Badge": {
+          "description": "Small label/tag component",
+          "props": "variant: 'default' | 'outline'",
+          "defaultStyle": "px-2 py-0.5 text-xs rounded-md"
+        }
+      },
+      "forms": {
+        "Button": {
+          "description": "Interactive button with icon support",
+          "props": "variant, size: 'sm' | 'md' | 'lg', icon, iconPosition",
+          "padding": {
+            "sm": "px-4 py-2",
+            "md": "px-5 py-2.5",
+            "lg": "px-6 py-3"
+          },
+          "a11y": {
+            "iconOnly": "Auto-generates aria-label for icon-only buttons",
+            "ariaDisabled": "Supports aria-disabled attribute"
+          }
+        },
+        "Input": {
+          "description": "Text input with label support",
+          "props": "label, error, hint, className",
+          "padding": "px-4 py-2.5"
+        },
+        "Select": {
+          "description": "Dropdown select with label support",
+          "props": "label, options, error, placeholder",
+          "padding": "px-4 py-2.5"
+        },
+        "Modal": {
+          "description": "Dialog overlay component",
+          "props": "isOpen, onClose, title, children, footer, size",
+          "padding": "px-6 py-4 for all sections",
+          "a11y": "role='dialog', aria-modal, aria-labelledby, focus trap, escape close"
+        }
+      }
+    },
+    "pageStructure": {
+      "layout": {
+        "skipLink": "<a href='#main-content' className='skip-link'>",
+        "sidebar": "<aside aria-label='Navegación principal' className='w-64'>",
+        "main": "<main id='main-content' className='px-4 py-6 md:px-8 md:py-8'>",
+        "mobileNav": "<nav aria-label='Navegación móvil' className='fixed bottom-0'>"
+      },
+      "pageContent": "<Container><Stack gap='xl'>content</Stack></Container>",
+      "mobileNavClearance": "pb-24 md:pb-0 on root Stack"
+    },
+    "fileStructure": {
+      "components": "src/components/ (Button, Card, Container, Input, Modal, Row, Select, Stack, Badge, Layout)",
+      "pages": "src/pages/",
+      "services": "src/services/api.ts",
+      "types": "src/types/index.ts",
+      "styles": "src/index.css"
+    }
+  }
+}

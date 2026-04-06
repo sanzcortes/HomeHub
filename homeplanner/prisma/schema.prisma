@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+  output    = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Ingredient {
+  id       String  @id @default(uuid())
+  name     String  @unique
+  unit     String
+  category String?
+
+  calories       Float?
+  protein        Float?
+  carbs          Float?
+  sugars         Float?
+  fat            Float?
+  saturatedFat   Float?
+  salt           Float?
+
+  dishes RecipeIngredient[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Dish {
+  id          String @id @default(uuid())
+  name        String
+  description String?
+
+  ingredients RecipeIngredient[]
+  weeklyPlans WeeklyPlanDish[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RecipeIngredient {
+  id           String     @id @default(uuid())
+  dishId       String
+  ingredientId String
+  quantity     Float
+
+  dish       Dish       @relation(fields: [dishId], references: [id], onDelete: Cascade)
+  ingredient Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([dishId, ingredientId])
+}
+
+model WeeklyPlan {
+  id        String   @id @default(uuid())
+  day       String
+  slot      String
+  weekStart DateTime
+
+  dishes WeeklyPlanDish[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([day, slot, weekStart])
+}
+
+model WeeklyPlanDish {
+  id          String @id @default(uuid())
+  weeklyPlanId String
+  dishId       String
+
+  weeklyPlan WeeklyPlan @relation(fields: [weeklyPlanId], references: [id], onDelete: Cascade)
+  dish       Dish       @relation(fields: [dishId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([weeklyPlanId, dishId])
+}
+
+model ManualItem {
+  id        String   @id @default(uuid())
+  name      String
+  quantity  Float?
+  unit      String?
+  checked   Boolean  @default(false)
+  weekStart DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MealTemplate {
+  id          String   @id @default(uuid())
+  name        String
+  slot        String   // "Comida" o "Cena"
+  dishIds     String   // IDs de platos separados por coma (JSON array stored as string)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WeekTemplate {
+  id        String   @id @default(uuid())
+  name      String
+
+  mondayLunch    String?  // JSON array de dishIds
+  mondayDinner   String?
+  tuesdayLunch   String?
+  tuesdayDinner  String?
+  wednesdayLunch String?
+  wednesdayDinner String?
+  thursdayLunch  String?
+  thursdayDinner String?
+  fridayLunch   String?
+  fridayDinner  String?
+  saturdayLunch String?
+  saturdayDinner String?
+  sundayLunch   String?
+  sundayDinner  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
