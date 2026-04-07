@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Trash2, Edit2, Search, Utensils } from 'lucide-react';
-import { Button, Card, Modal, Input, Select, Stack, Row, Badge, Container } from '../components';
-import { dishesApi, ingredientsApi } from '../services/api';
+import { Button, Card, Modal, Input, Stack, Row, Container } from '../components';
+import { ingredientsApi, dishesApi } from '../services/api';
 import type { Dish, CreateDishData, Ingredient } from '../types';
 
 export function Dishes() {
@@ -56,7 +56,7 @@ export function Dishes() {
   });
 
   const createIngredientMutation = useMutation({
-    mutationFn: (data: Partial<Ingredient>) => ingredientsApi.create(data as Omit<Ingredient, 'id' | 'createdAt' | 'updatedAt'>),
+    mutationFn: (data: Partial<Ingredient>) => ingredientsApi.create(data as Omit<Ingredient, 'id' | 'created_at' | 'updated_at'>),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ingredients'] });
       setIsIngredientModalOpen(false);
@@ -88,7 +88,7 @@ export function Dishes() {
       name: dish.name,
       description: dish.description || '',
       ingredients: dish.ingredients.map((ri) => ({
-        ingredientId: ri.ingredientId,
+        ingredientId: ri.ingredient_id,
         quantity: ri.quantity,
       })),
     });
@@ -126,7 +126,7 @@ export function Dishes() {
         carbs: ingredient.carbs?.toString() || '',
         sugars: ingredient.sugars?.toString() || '',
         fat: ingredient.fat?.toString() || '',
-        saturatedFat: ingredient.saturatedFat?.toString() || '',
+        saturatedFat: ingredient.saturated_fat?.toString() || '',
         salt: ingredient.salt?.toString() || '',
       });
     } else {
@@ -157,7 +157,7 @@ export function Dishes() {
       carbs: ingredientFormData.carbs ? parseFloat(ingredientFormData.carbs) : null,
       sugars: ingredientFormData.sugars ? parseFloat(ingredientFormData.sugars) : null,
       fat: ingredientFormData.fat ? parseFloat(ingredientFormData.fat) : null,
-      saturatedFat: ingredientFormData.saturatedFat ? parseFloat(ingredientFormData.saturatedFat) : null,
+      saturated_fat: ingredientFormData.saturatedFat ? parseFloat(ingredientFormData.saturatedFat) : null,
       salt: ingredientFormData.salt ? parseFloat(ingredientFormData.salt) : null,
     };
 
@@ -237,35 +237,6 @@ export function Dishes() {
     (i) => !formData.ingredients.find((fi) => fi.ingredientId === i.id)
   );
 
-  const getUnitCategory = (unit: string): string => {
-    const u = unit.toLowerCase();
-    if (['g', 'kg', 'mg'].includes(u)) return 'weight';
-    if (['ml', 'l', 'cl'].includes(u)) return 'volume';
-    return u;
-  };
-
-  const getIncompatibleWarning = (unit: string): string | null => {
-    if (formData.ingredients.length === 0) return null;
-    const unitCategory = getUnitCategory(unit);
-    const existingUnits = formData.ingredients
-      .map((fi) => {
-        const ing = ingredients.find((i) => i.id === fi.ingredientId);
-        return ing ? getUnitCategory(ing.unit) : null;
-      })
-      .filter((c): c is string => c !== null);
-    
-    if (existingUnits.length > 0 && !existingUnits.includes(unitCategory)) {
-      const existingCategory = existingUnits[0];
-      if (unitCategory === 'weight' && existingCategory === 'volume') {
-        return `Este ingrediente usa "${unit}" (volumen) pero el plato ya tiene ingredientes de peso`;
-      }
-      if (unitCategory === 'volume' && existingCategory === 'weight') {
-        return `Este ingrediente usa "${unit}" (peso) pero el plato ya tiene ingredientes de volumen`;
-      }
-    }
-    return null;
-  };
-
   return (
     <Container size="lg">
       <Stack gap="xl" className="pb-24 md:pb-0">
@@ -327,29 +298,6 @@ export function Dishes() {
                   <p className="text-sm text-text-secondary">
                     <span className="font-medium">{dish.ingredients.length}</span> ingredientes
                   </p>
-                  <Row gap="xs" className="flex-wrap">
-                    {dish.ingredients.slice(0, 3).map((ri) => (
-                      <Badge key={ri.id}>{ri.ingredient.name}</Badge>
-                    ))}
-                    {dish.ingredients.length > 3 && (
-                      <Badge variant="outline">+{dish.ingredients.length - 3}</Badge>
-                    )}
-                  </Row>
-                  
-                  {dish.nutrition && (
-                    <div className="text-xs text-text-secondary border-t pt-2 mt-2">
-                      <p className="font-medium mb-1">Información nutricional</p>
-                      <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-                        <span>Calorías: {dish.nutrition.calories} kcal</span>
-                        <span>Proteína: {dish.nutrition.protein}g</span>
-                        <span>Carbs: {dish.nutrition.carbs}g</span>
-                        <span>Azúcar: {dish.nutrition.sugars}g</span>
-                        <span>Grasa: {dish.nutrition.fat}g</span>
-                        <span>Sat: {dish.nutrition.saturatedFat}g</span>
-                        <span>Sal: {dish.nutrition.salt}g</span>
-                      </div>
-                    </div>
-                  )}
                 </Stack>
               </Card>
             ))}
@@ -478,27 +426,20 @@ export function Dishes() {
 
                 <Row gap="sm" align="end">
                   <div className="flex-1">
-                    <Select
-                      options={[
-                        { value: '', label: 'Selecciona ingrediente', disabled: true },
-                        ...availableIngredients.map((i) => ({
-                          value: i.id,
-                          label: `${i.name} (${i.unit})`,
-                        })),
-                      ]}
+                    <select
+                      className="w-full px-3 py-3 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
                       value={newIngredient.ingredientId}
                       onChange={(e) =>
                         setNewIngredient({ ...newIngredient, ingredientId: e.target.value })
                       }
-                      className="w-full"
-                    />
-                    {newIngredient.ingredientId && (() => {
-                      const selectedIng = ingredients.find(i => i.id === newIngredient.ingredientId);
-                      const warning = selectedIng ? getIncompatibleWarning(selectedIng.unit) : null;
-                      return warning ? (
-                        <p className="text-xs text-amber-600 mt-1">{warning}</p>
-                      ) : null;
-                    })()}
+                    >
+                      <option value="">Selecciona ingrediente</option>
+                      {availableIngredients.map((i) => (
+                        <option key={i.id} value={i.id}>
+                          {i.name} ({i.unit})
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <Input
                     type="number"

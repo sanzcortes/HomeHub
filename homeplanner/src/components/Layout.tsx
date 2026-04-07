@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { Home, UtensilsCrossed, Package, Calendar, ShoppingCart, Bookmark } from 'lucide-react';
+import { Home, UtensilsCrossed, Package, Calendar, ShoppingCart, Bookmark, UserCircle } from 'lucide-react';
 
 const navItems = [
   { to: '/', icon: Home, label: 'Inicio', description: 'Página principal' },
@@ -8,6 +8,7 @@ const navItems = [
   { to: '/planner', icon: Calendar, label: 'Planificador', description: 'Planificar comidas' },
   { to: '/shopping', icon: ShoppingCart, label: 'Compra', description: 'Lista de compra' },
   { to: '/templates', icon: Bookmark, label: 'Plantillas', description: 'Guardar y reutilizar' },
+  { to: '/profile', icon: UserCircle, label: 'Perfil', description: 'Tu cuenta' },
 ];
 
 export function Layout() {

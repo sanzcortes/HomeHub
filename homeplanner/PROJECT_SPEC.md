@@ -208,6 +208,16 @@ model WeekTemplate {
 - [ ] Modelo CleaningTask en Prisma (limpieza)
 - [ ] Vista de planificación de limpieza periódica
 
+### Fase 6: Multiusuario Compartido (En desarrollo)
+- [x] Supabase como backend (Auth + Database)
+- [x] Sistema de autenticación (login/register)
+- [x] Perfiles de usuario vinculados a households
+- [ ] Selector de comensales en planificación
+- [ ] Mostrar iconos de quién come cada plato
+- [ ] Lista de compra filtrable por usuario
+- [ ] Invitar a otros usuarios al household
+- [ ] Sincronización realtime
+
 ## 7. Instrucciones para el Desarrollo
 
 ### Tipado Estricto

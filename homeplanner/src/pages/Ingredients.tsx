@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Trash2, Edit2, Search, Package } from 'lucide-react';
-import { Button, Card, Modal, Input, Select, Stack, Row, Badge, Container } from '../components';
+import { Button, Card, Modal, Input, Stack, Row, Container } from '../components';
 import { ingredientsApi } from '../services/api';
 import type { Ingredient } from '../types';
 
@@ -97,7 +97,7 @@ export function Ingredients() {
       carbs: ingredient.carbs?.toString() || '',
       sugars: ingredient.sugars?.toString() || '',
       fat: ingredient.fat?.toString() || '',
-      saturatedFat: ingredient.saturatedFat?.toString() || '',
+      saturatedFat: ingredient.saturated_fat?.toString() || '',
       salt: ingredient.salt?.toString() || '',
     });
     setIsModalOpen(true);
@@ -214,7 +214,7 @@ export function Ingredients() {
                               <span>Carbs: {ing.carbs}g</span>
                               <span>Azúcar: {ing.sugars}g</span>
                               <span>Grasa: {ing.fat}g</span>
-                              <span>Sat: {ing.saturatedFat}g</span>
+                              <span>Sat: {ing.saturated_fat}g</span>
                               <span>Sal: {ing.salt}g</span>
                             </div>
                           </div>
