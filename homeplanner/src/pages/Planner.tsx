@@ -69,7 +69,7 @@ export function Planner() {
   const openSlotModal = (day: string, slot: string) => {
     const existingPlan = getPlanForSlot(day, slot);
     setSelectedSlot({ day, slot });
-    setSelectedDishIds(existingPlan?.dishes.map(d => d.dishId) || []);
+    setSelectedDishIds(existingPlan?.dishes.map(d => d.dish_id) || []);
     setSearch('');
     setIsModalOpen(true);
   };

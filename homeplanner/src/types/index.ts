@@ -8,16 +8,16 @@ export interface Ingredient {
   carbs: number | null;
   sugars: number | null;
   fat: number | null;
-  saturatedFat: number | null;
+  saturated_fat: number | null;
   salt: number | null;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface RecipeIngredient {
   id: string;
-  dishId: string;
-  ingredientId: string;
+  dish_id: string;
+  ingredient_id: string;
   quantity: number;
   ingredient: Ingredient;
 }
@@ -27,9 +27,8 @@ export interface Dish {
   name: string;
   description: string | null;
   ingredients: RecipeIngredient[];
-  nutrition?: DishNutrition | null;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface DishNutrition {
@@ -44,8 +43,9 @@ export interface DishNutrition {
 
 export interface WeeklyPlanDish {
   id: string;
-  weeklyPlanId: string;
-  dishId: string;
+  weekly_plan_id: string;
+  dish_id: string;
+  assigned_to: string[];
   dish: Dish;
 }
 
@@ -53,7 +53,7 @@ export interface WeeklyPlan {
   id: string;
   day: string;
   slot: string;
-  weekStart: string;
+  week_start: string;
   dishes: WeeklyPlanDish[];
 }
 
@@ -63,7 +63,7 @@ export interface ManualItem {
   quantity: number | null;
   unit: string | null;
   checked: boolean;
-  weekStart: string;
+  week_start: string;
 }
 
 export interface ShoppingItem {
@@ -109,8 +109,8 @@ export interface MealTemplate {
   name: string;
   slot: string;
   dishIds: string[];
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface WeekTemplate {
@@ -130,8 +130,8 @@ export interface WeekTemplate {
   saturdayDinner: string[] | null;
   sundayLunch: string[] | null;
   sundayDinner: string[] | null;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CreateMealTemplateData {
