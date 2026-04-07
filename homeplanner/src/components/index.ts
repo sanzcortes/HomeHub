@@ -10,3 +10,4 @@ export { Container } from './Container';
 export { SlotButton } from './SlotButton';
 export { WeekNavigator } from './WeekNavigator';
 export { DayCard } from './DayCard';
+export { ComboBox, type ComboBoxOption } from './ComboBox';

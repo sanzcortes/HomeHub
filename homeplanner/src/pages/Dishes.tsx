@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Trash2, Edit2, Search, Utensils } from 'lucide-react';
-import { Button, Card, Modal, Input, Stack, Row, Container } from '../components';
+import { Button, Card, Modal, Input, Stack, Row, Container, ComboBox } from '../components';
 import { ingredientsApi, dishesApi } from '../services/api';
 import type { Dish, CreateDishData, Ingredient } from '../types';
 
@@ -424,38 +424,46 @@ export function Dishes() {
                   )}
                 </Stack>
 
-                <Row gap="sm" align="end">
-                  <div className="flex-1">
-                    <select
-                      className="w-full px-3 py-3 border border-border rounded-lg bg-surface focus:outline-none focus:ring-2 focus:ring-primary"
-                      value={newIngredient.ingredientId}
-                      onChange={(e) =>
-                        setNewIngredient({ ...newIngredient, ingredientId: e.target.value })
-                      }
-                    >
-                      <option value="">Selecciona ingrediente</option>
-                      {availableIngredients.map((i) => (
-                        <option key={i.id} value={i.id}>
-                          {i.name} ({i.unit})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    placeholder="Cant."
-                    value={newIngredient.quantity}
-                    onChange={(e) =>
-                      setNewIngredient({ ...newIngredient, quantity: e.target.value })
+                <div className="space-y-3">
+                  <ComboBox
+                    value={newIngredient.ingredientId}
+                    onChange={(value) =>
+                      setNewIngredient({ ...newIngredient, ingredientId: value })
                     }
-                    className="w-24"
+                    options={availableIngredients.map((i) => ({
+                      value: i.id,
+                      label: i.name,
+                      description: i.unit,
+                    }))}
+                    placeholder="Selecciona ingrediente"
+                    searchable={true}
+                    emptyMessage="No hay ingredientes disponibles"
                   />
-                  <Button type="button" variant="secondary" onClick={handleAddIngredient}>
-                    <Plus size={20} />
-                  </Button>
-                </Row>
+                  
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <Input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        placeholder="Cantidad"
+                        value={newIngredient.quantity}
+                        onChange={(e) =>
+                          setNewIngredient({ ...newIngredient, quantity: e.target.value })
+                        }
+                      />
+                    </div>
+                    <Button 
+                      type="button" 
+                      variant="secondary" 
+                      onClick={handleAddIngredient}
+                      className="px-5"
+                      disabled={!newIngredient.ingredientId || !newIngredient.quantity}
+                    >
+                      <Plus size={20} />
+                    </Button>
+                  </div>
+                </div>
 
                 <Button
                   type="button"
